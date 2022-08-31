@@ -1,6 +1,7 @@
 # 目次
 
 - [一日目](#一日目)
+- [二日目](#二日目)
 
 ## <strong>一日目</strong>
 
@@ -103,3 +104,183 @@ export default defineConfig({
 
 アイコンセットを作る時に有用なサイト
 https://realfavicongenerator.net/
+
+# 二日目
+
+### <strong>1. meterail ui のカスタムカラーを使うときのタイプ設定</strong>
+
+- 参考 [createPallete.d.ts](./src/types/createPallete.d.ts)
+
+### <strong>2. ○○.d.ts を使ってみよう</strong>
+
+- 理由
+
+  - タイプ名がとても長くて別のファイルに定義し保存するとき
+  - タイプ reference を作りたいとき
+  - グローバルモヂュールにしたいとき
+  - 最も根本的な理由は前からいた js サードパーティーモヂュールたちを ts 環境で使えるように作ったらしい
+
+  - .d.ts ファイルの中にはタイプの宣言のみ
+
+    具現がない宣言を ambient と言いますが、こんな宣言が.d.ts ファイルに入るという
+
+    そして decalre といったキーワードを通じコンパイラーに該当の変数や関数の存在を知らせるという
+
+### <strong>3. typescript と一緒に jsdoc ということを使ってみよう</strong>
+
+- JSDOC とは？
+
+  - ドキュメントないのコメントをコードと一緒にソースコード追加できることが特徴
+  - 主になる目的は JavaScript App または、ライブラリ API をドキュメント化すること
+  - 各コメントは/\*\*sequence で始まることでパーサーが認識できる
+
+- 何ができる？
+
+  - API ドキュメント生成
+
+  - タイプ推論
+
+  - BUG FIX REPORT
+
+- 基本的な使い方
+
+  - @author
+
+    コード作成者の情報がいる場合使うコード
+    ex
+
+    ```
+    /**
+    * @author <name>
+    * @author <name> [<emailAddress>]
+    */
+
+    ```
+
+  - @license
+
+    オープンソースライブライ identifier
+
+  - @constant (@const)
+
+    constant ということを表す
+
+    ex
+
+    ```
+    /**
+    * @constant [<type> <name>]
+    */
+    ```
+
+  - @description
+
+        コードの説明を行う
+
+
+        ex
+
+        ```
+        // @description <some description>
+        ```
+
+  - @throws
+
+    エラー情報や Exception を表示
+
+    ex
+
+    ```
+    // @throws free-form description
+    // @throws {<type>}
+    // @throws {<type>} free-form description
+
+    ```
+
+  - @type
+
+    このタグを使用しタイプの名前を参考できる
+
+    ```
+    /**
+    * @type {string}
+    */
+    ```
+
+  - @param
+
+    @type タグと同じくタイプ構文である.
+
+    しかし関数のパラメーターに使うことができる．
+
+    パラメーターは名前に大カッコをつけることで選択的なパラメーターということをしれ知らせることができる
+
+    ex
+
+    ```
+    /**
+    * @param {string}  p1 -> 普通のパラメーター
+    * @param {string} [p2="test"] -> 選択的なパラメーター
+    */
+    ```
+
+  - @return
+
+    使い方は@param と同じ．しかし、これは関数などの return タイプを定義するときに使う
+
+    ex
+
+    ```
+    /**
+    * @returns {{ a: string, b: number }} -> return であれ　returnsであれ同じ
+    */
+    ```
+
+  - @typedef
+
+    複雑なタイプを定義するときに使う．使い方は param と似てる
+
+    ex
+
+    ```
+    /**
+    * @typedef {Object} SpecialType - 新しいオブジェクト生成
+    * @property {string} prop1 - オブジェクトの文字列プロパティ
+    * @property {number} prop2 - オブジェクトの数字プロパティ
+    * @property {number=} prop3 - オブジェクトの選択的な数字プロパティ
+    */
+
+    /** @type {SpecialType1} */
+    var specialTypeObject1;
+
+    ```
+
+  - @callback
+
+    @typedef と似てる、しかしこれは特定 Object ではなく function タイプを指定する
+
+    ```
+    /**
+    * @callback Predicate
+    * @param {string} data
+    * @param {number} [index]
+    * @returns {boolean}
+    */
+
+    /** @type {Predicate} */
+    const ok = (s) => !(s.length % 2);
+    ```
+
+  - @template
+
+    ゼネリックタイプの定義可能
+
+    ```
+    /**
+    * @template T
+    * @param {T}
+    * @return {T}
+    */
+    ```
+
+    色々あるが残ったタグが使う度にここに書こう‼
