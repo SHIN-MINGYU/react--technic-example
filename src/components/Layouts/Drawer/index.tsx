@@ -1,5 +1,6 @@
 import { Divider, Drawer, Grid, Toolbar } from "@mui/material";
 import styled from "styled-components";
+
 import { ITEMS } from "../../../utils/drawerItem";
 import DrawerListCreator from "./DrawerListCreator";
 
@@ -15,6 +16,7 @@ const LeftDrawer = ({ open }: Props) => {
         overflow: "hidden",
         "& .MuiDrawer-paper": { borderWidth: 0 },
       }}
+      classes={{ paper: "drawerPaper" }}
       anchor="left"
       open={open}
       variant="permanent">
@@ -37,6 +39,10 @@ const LeftDrawer = ({ open }: Props) => {
 };
 
 export default LeftDrawer;
+
+const DrawerSizer = styled("div")`
+  width: 240px;
+`;
 
 const DrawerItem = styled("div")`
   flex-grow: 1;

@@ -284,3 +284,37 @@ https://realfavicongenerator.net/
     ```
 
     色々あるが残ったタグが使う度にここに書こう‼
+
+# 三日目
+
+### <strong>1. useLayoutEffect を使って useEffect との差を調べてみよう</strong>
+
+- useEffect とは？
+
+  - 既存クラス形のライフルサイクル関数を hooksStyle で使えるように react から基本的に提供してくれている hooks
+  - 役割
+    - componentDidMount, componentDidUpdate, componentWillUnMount
+    - といったライフルサイクルを代替
+    - レンダリング後に呼ばれるので state がこの effect に依存したら不便な UX を提供する可能性あり
+    - 主にデータやり取りや subscribe 設定をするとき、また直接 DOM をコントロールするときに使うことができる
+
+- では useLayoutEffect は？
+  - 基本的に動作は useEffect と同じ
+  - しかし、レンダリング後に呼ばれる useEffect と違って画面にレンダリングする前に呼ばれるので直接 DOM をコントロールするコードがあってもクライアントは不便な UX を経験しないことができる
+  - useLayoutEffect は同期的に実行されるので中身が全部実行されないと、画面が書かれるないのでロジックが複雑な場合はクライアントが Layout を見るまでの時間が長くなる可能性があり、できれば useEffect を使ったほうが良い
+
+### <strong>2. Custom Hook pattern</strong>
+
+- 適用したファイル [DrawerListCreator.tsx](./src/components/Layouts/Drawer/DrawerListCreator.tsx)
+
+- メインロジックがカスタムフックに渡され、ロジックを View と離せることができる
+- 色々な内部のロジックを漏出しながら Components のコントロールがしやすくなる
+
+長所
+
+- 使用者はフックと Components の間で自分のロジックを挿入し、基本 Components の動作をもっと深くコントロールできる
+
+短所
+
+- ロジックが View と分離されてあり、この二つをつなげるのは使用者次第である
+- Components をコントロールするには Components の動作方式の深い理解がいる

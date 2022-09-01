@@ -3,6 +3,6 @@
   src: url("./assets/KTEGAKI122/KTEGAKI.ttf") format("truetype");
 }
 
-#root {
+* {
   font-family: "KTEGAKI" !important;
 }
