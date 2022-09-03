@@ -6,12 +6,14 @@ import DrawerListCreator from "./DrawerListCreator";
 
 type Props = {
   open: boolean;
+  drawerWidth: number;
 };
 
-const LeftDrawer = ({ open }: Props) => {
+const LeftDrawer = ({ open, drawerWidth }: Props) => {
   return (
     <Drawer
       sx={{
+        maxWidth: `${drawerWidth}px`,
         minHeight: "100%",
         overflow: "hidden",
         "& .MuiDrawer-paper": { borderWidth: 0 },

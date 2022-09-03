@@ -1,8 +1,12 @@
 import Layout from "./components/Layouts";
-import { BrowserRouter } from "react-router-dom";
+import DynamicRouter from "./Router";
 
 function App() {
-  return <Layout></Layout>;
+  return (
+    <Layout>
+      <DynamicRouter pagesPath="./pages"></DynamicRouter>
+    </Layout>
+  );
 }
 
 export default App;

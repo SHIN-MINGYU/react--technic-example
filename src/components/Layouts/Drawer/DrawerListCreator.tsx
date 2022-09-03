@@ -1,5 +1,7 @@
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Collapse, List, ListItemButton, ListItemText } from "@mui/material";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 import useDrawerOpener from "../../../hooks/useDrawerOpener";
 import { DrawerItem } from "../../../utils/drawerItem";
@@ -26,19 +28,26 @@ const DrawerListCreator = ({ items }: Props) => {
               sx={{ fontFamily: "KTEGAKI" }}
               onClick={() => collapserHandler(key)}
               component={"div"}>
-              <ListItemText primary={<span>{key}</span>}></ListItemText>
+              <img src={`/src/assets/${key}.svg`} width={16} height={16}></img>
+              <ListItemText
+                sx={{ textAlign: "center" }}
+                primary={<span>{key}</span>}></ListItemText>
               {collapser[`${key}`] ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={collapser[`${key}`]}>
               {/* Nested List Collapse(ITEM) */}
               <List>
                 {items[key].map((value, index) => (
-                  <ListItemButton key={value + String(index)}>
-                    <ListItemText
-                      secondary={
-                        <span>&nbsp;&nbsp;{value}</span>
-                      }></ListItemText>
-                  </ListItemButton>
+                  <GoToLink
+                    to={`${"/" + key + "/" + value}`}
+                    key={value + String(index)}>
+                    <ListItemButton>
+                      <ListItemText
+                        secondary={
+                          <span>&nbsp;&nbsp;{value}</span>
+                        }></ListItemText>
+                    </ListItemButton>
+                  </GoToLink>
                 ))}
               </List>
             </Collapse>
@@ -48,5 +57,9 @@ const DrawerListCreator = ({ items }: Props) => {
     </>
   );
 };
+
+const GoToLink = styled(Link)`
+  text-decoration: none;
+`;
 
 export default DrawerListCreator;
