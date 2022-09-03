@@ -1,10 +1,11 @@
 import styled from "styled-components";
+
 import Title from "../../content/Title";
 
-type Props = {
+import type { IProps } from "../../../types/utils.interface";
+interface Props extends IProps {
   drawerWidth: number;
-  children?: JSX.Element | Array<JSX.Element>;
-};
+}
 
 const Main = ({ drawerWidth, children }: Props) => {
   return (

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 type Props = {
@@ -22,6 +22,7 @@ const Renderer = ({ pagesPath }: Props) => {
 
   const Page = lazy(() =>
     import(pagesPath + location.pathname).catch((err) => {
+      console.log(pagesPath);
       return import(pagesPath + "/error/404");
     })
   );

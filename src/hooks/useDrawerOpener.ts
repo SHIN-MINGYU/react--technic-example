@@ -3,6 +3,9 @@ import { useCallback, useEffect, useState } from "react";
 import { IStringToBool } from "../types/signature.interface";
 import { DrawerItem } from "../utils/drawerItem";
 
+/**
+ * @description Drawerのcollaseを管理する関数
+ */
 const useDrawerOpener = (items: DrawerItem) => {
   const [collapser, setCollapser] = useState<IStringToBool>({});
 
@@ -23,7 +26,6 @@ const useDrawerOpener = (items: DrawerItem) => {
   /**
    * @param key Nested List Headerのテキスト
    * @content クリックしたNested ListのCollapse状態を変える関数
-   * @return {void}
    */
   const collapserHandler = (key: string) => {
     setCollapser((prev) => {

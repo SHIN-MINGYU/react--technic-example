@@ -1,13 +1,35 @@
 # 目次
 
 - [一日目](#一日目)
+
+  - [1. vite を使って PWA の構成を行う](#strong1-vite-を通じて-pwa-の構成を行うstrong)
+  - [2. サービスワーカ構成](#strong2-サービスワーカ構成strong)
+  - [3.PWA の最小要求事項](#strong3-pwa-の最小要求事項strong)
+
 - [二日目](#二日目)
+
+  - [1. meterail ui のカスタムカラーを使うときのタイプ設定](#strong1-meterail-ui-のカスタムカラーを使うときのタイプ設定strong)
+  - [2. ○○.d.ts を使ってみよう](#strong2-○○dts-を使ってみようstrong);
+  - [3.typescript と一緒に jsdoc ということを使ってみよう](#strong3-typescript-と一緒に-jsdoc-ということを使ってみようstrong)
+
 - [三日目](#三日目)
+
+  - [1. useLayoutEffect を使って useEffect との差を調べてみよう](#strong1-uselayouteffect-を使って-useeffect-との差を調べてみようstrong)
+  - [2. Custom Hook pattern](#strong2-custom-hook-patternstrong)
+
 - [四日目](#四日目)
+
+  - [1.generator 関数](#strong1-genarator-関数-strong)
+  - [2.react-router-dom を使った-dynamic-routing](#strong-2-react-router-dom-を使った-dynamic-routingstrong)
+
+- [五日目](#五日目)
+  - [1.barrel-pattern](#strong1-barrel-patternabout-export-and-importstrong)
+  - [2.compound-component-pattern](#strong-2-compound-component-patternstrong)
+  - [3.error 発生(react-router-dom build error)](#strong-stylecolorrederror-発生-strong)
 
 ## <strong>一日目</strong>
 
-### <strong>1. vite を通じて PWA の構成を行う</strong>
+### <strong>1. vite 使って PWA の構成を行う</strong>
 
 - vite の plugin の一つである vite-plugin-pwa を利用する
 - VitePWA という named export module を import して Vite 公式ウェブで説明してくれている VitePWA({ registerType: "autoUpdate" })というコードを vite の設定ファイルに plugins として挿入することで pwa menifast を生成し進入点を挿入しこれによってサービスワーカを生成し、Browser に登録することができる
@@ -369,3 +391,69 @@ https://realfavicongenerator.net/
 - 参考 [Router.tsx](./src/Router.tsx)
 
   React.lazy と React.Suspense を利用し NEXT みたいな page フォルダーに paging 機能
+
+# 五日目
+
+### <strong>1. Barrel Pattern(about export and import)</strong>
+
+- Barrel Pattern とは？
+
+  一つのファイルで re-export し、import 構文の縮約することによってコードベースをもっときれいに管理できる Design Pattern である
+
+  例 適用ファイル : [generator.tsx](./src/pages/javascript/generator.tsx)
+
+  - Barrel Pattern を使わない場合
+
+  ```
+  import CodeContainer from "../../components/content/code";
+  import Title from "../../components/content/Title";
+  import Console from "../../components/content/console";
+  ```
+
+  -Barrel Pattern を使った場合
+
+  ```
+  import { CodeContainer, Title,Console } from "../../components/content";
+  ```
+
+このように同じ DIR にあるファイルをインポートするときに書けるパータンである
+
+- 短所
+
+  Tree shaking 問題が起こる可能性ある
+
+  - Tree shaking は何？
+
+    木を振って死んだ葉を落とすように、build するとき使用しないコードを削除することを意味する
+
+  - 使用しないコードがあるため、code splitting がうまくできなくて、bundle のサイズがでかくなる
+  - これによって性能問題が起こる可能性ある
+
+### <strong> 2. Compound Component Pattern</strong>
+
+- Compound Component Pattern とは？
+
+  内部の state を共有し、お互いに相互作用する Component たちを内部 static Components にして、クライアントに内部ロジック抽象化し、
+  これ以外のロジック作成を独立的に作成することを目的にするパータン
+
+- Props Drilling 問題解決
+
+  - PropsDrilling とは？
+    -React のデータ流れを表す言葉であり、親から子に順次的に Props が行くことを意味する
+    先ほど書いた通り下の component にデータ伝送を行う時に親 component を通さず直接データを渡せる
+
+- Tree shaking が不可能であるため、条件によって変わる Component には不適合
+
+  - 内部ロジックを共有するために、Provider Pattern を活用する
+
+        Provider Pattern も活用してみたかったが、ロジック的に中身を共有するPropsがないため、下のリンクのファイルではProvider Patternがない
+
+        でも、別々のだったComponentを一つのComponentにしたことで満足：）
+
+  適用ファイル : [generator.tsx](./src/pages/javascript/generator.tsx)
+
+### <strong style="color:red">Error 発生 </strong>
+
+### <strong>３．Build したら paging がうまく作動しない</strong>
+
+予想理由 :　 lazy でファイルの page をしたものの、build するときにはその経路にファイルがいないから paging 処理ができてない

@@ -1,15 +1,15 @@
 import { ThemeProvider } from "@mui/material";
 import { useState } from "react";
+
 import LeftDrawer from "./Drawer";
 import Header from "./Header";
 import Main from "./Main";
 import { theme } from "./theme";
 
+import type { IProps } from "../../types/utils.interface";
 const drawerWidth = 240;
 
-type Props = {
-  children: JSX.Element | Array<JSX.Element>;
-};
+interface Props extends IProps {}
 
 const Layout = ({ children }: Props) => {
   const [open, setOpen] = useState<boolean>(false);

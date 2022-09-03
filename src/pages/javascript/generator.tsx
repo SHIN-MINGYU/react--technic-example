@@ -1,19 +1,11 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent as Content,
-  CardHeader,
-  Grid,
-} from "@mui/material";
-import styled from "styled-components";
-import Code from "../../components/content/Code";
-import Title from "../../components/content/Title";
+import { Card, CardHeader, Grid } from "@mui/material";
+
+import { CodeContainer, Title, Console } from "../../components/content";
 import useIterator from "../../hooks/useIterator";
-import "../../utils/helper";
 
 const GeneratorExam = () => {
   const { currentFunction, changeFunction, sourceMap } = useIterator(1, 10);
+
   return (
     <>
       <Title>Generator</Title>
@@ -26,53 +18,26 @@ const GeneratorExam = () => {
                 <span>単なるループステートメント(1から10まで出力)</span>
               }
             />
-            <CardContent>
-              {Array.from(currentFunction.Iterator).map((el, idx) => {
-                console.log(el);
-                return (
-                  <ConsoleTyping key={idx}>
-                    <>console &gt;&gt;{el}</>
-                  </ConsoleTyping>
-                );
-              })}
-            </CardContent>
+            <Console>
+              <Console.Typing<number> iterator={currentFunction.Iterator} />
+            </Console>
           </Card>
         </Grid>
         <Grid item xs={6}>
           <Card>
             <CardHeader title={<span>使用コード</span>} />
-            <CardActions>
-              {sourceMap.map((el, idx) => {
-                return (
-                  <Button
-                    key={idx}
-                    onClick={() => {
-                      changeFunction(el);
-                    }}>
-                    {el}
-                  </Button>
-                );
-              })}
-            </CardActions>
-            <CardContent>
-              <Code code={currentFunction.funToStr}></Code>
-            </CardContent>
+            <CodeContainer>
+              <CodeContainer.Actions
+                action={changeFunction}
+                sourceMap={sourceMap}
+              />
+              <CodeContainer.Code code={currentFunction.funToStr} />
+            </CodeContainer>
           </Card>
         </Grid>
       </Grid>
     </>
   );
 };
-
-const CardContent = styled(Content)`
-  margin: 10px;
-  height: 400px;
-  overflow-y: auto;
-  background-color: beige;
-`;
-
-const ConsoleTyping = styled.p`
-  color: base;
-`;
 
 export default GeneratorExam;

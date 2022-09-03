@@ -1,7 +1,17 @@
 import { useState } from "react";
 
+import { IiteratorState } from "../types/hooks.interface";
+
+/**
+ * @hooks
+ * @param start : number start value of number
+ * @param end : number end value of number
+ * @description this hook provide way to render ijust number iterator in window
+ */
 const useIterator = (start: number, end: number) => {
-  const [currentFunction, setCurrentFunction] = useState<any>({
+  const [currentFunction, setCurrentFunction] = useState<
+    IiteratorState<number>
+  >({
     Iterator: generator(),
     funToStr: generator.toString(),
   });
@@ -21,7 +31,7 @@ const useIterator = (start: number, end: number) => {
         return this;
       },
       next() {
-        const done = i >= end;
+        const done = i > end;
         return {
           done: done,
           value: !done ? i++ : undefined,
@@ -47,7 +57,11 @@ const useIterator = (start: number, end: number) => {
     }
   };
 
-  return { currentFunction, changeFunction, sourceMap };
+  return {
+    currentFunction,
+    changeFunction,
+    sourceMap,
+  };
 };
 
 export default useIterator;
