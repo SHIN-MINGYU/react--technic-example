@@ -4,7 +4,7 @@ import DynamicRouter from "./Router";
 function App() {
   return (
     <Layout>
-      <DynamicRouter pagesPath="./pages"></DynamicRouter>
+      <DynamicRouter></DynamicRouter>
     </Layout>
   );
 }

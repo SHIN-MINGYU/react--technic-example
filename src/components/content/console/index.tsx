@@ -6,10 +6,18 @@ import Typing from "./Typing";
 import type { IProps } from "../../../types/utils.interface";
 interface Props extends IProps {}
 
+/**
+ *
+ * @param children - Components
+ * @child - Console.Typing<T>
+ */
 const Console = ({ children }: Props) => {
   return <ConsoleWindow>{children}</ConsoleWindow>;
 };
-
+/**
+ * @param iterator Iterator
+ * the Iterator for  render in window
+ */
 Console.Typing = Typing;
 
 const ConsoleWindow = styled(CardContent)`

@@ -452,8 +452,17 @@ https://realfavicongenerator.net/
 
   適用ファイル : [generator.tsx](./src/pages/javascript/generator.tsx)
 
-### <strong style="color:red">Error 発生 </strong>
+### <strong style="color:red">Error 発生 <span style="color:powderblue">---Solved</span> </strong>
 
 ### <strong>３．Build したら paging がうまく作動しない</strong>
 
 予想理由 :　 lazy でファイルの page をしたものの、build するときにはその経路にファイルがいないから paging 処理ができてない
+
+### <strong style="color:powderblue">理由</strong>
+
+ <p style="color:powderblue">Dynamic Import でファイルを読み込んだ場合、viteBunddlerは自動的にそのファイルをbuildのとき生成してくれる。</p>
+<p style="color:powderblue">しかしそのDynamic Importの経路が変数になっていると、viteBundllerはそのファイルを特定できなくなり、結果的に Code splittingファイルがちゃんとできない</p>
+
+### <strong style="color:powderblue">解決方法</strong>
+
+<p style="color:powderblue">vite の場合はこれを解決するために import.meta といった Object に glob という prototype を追加してくれるのでそれを正規表現式を利用し pages フォルダーに関したファイル全部を入力してくれることで全てのファイルが BUILD するときに生成される</p>

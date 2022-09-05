@@ -1,35 +1,37 @@
 import { lazy, Suspense } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import Error_404 from "./pages/error/404";
 
-type Props = {
-  pagesPath: string;
-};
+const modules = import.meta.glob("/src/pages/**/*.tsx");
+const routes = Object.keys(modules).map((route) => {
+  const path = route
+    .replace(/\/src\/pages|index|\.tsx$/g, "") // prefix削除
+    .replace(/\[\.{3}.+\]/, "*") //
+    .replace(/\[(.+)\]/, ":$1");
 
-const DynamicRouter = ({ pagesPath }: Props) => {
+  return { path, component: lazy(modules[route] as any) };
+});
+
+const DynamicRouter = () => {
   return (
     <Routes>
-      <Route
-        path="/*"
-        element={<Renderer pagesPath={pagesPath}></Renderer>}></Route>
+      {routes.map(({ path, component: Component }) => {
+        console.log(path, Component);
+        return (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <Suspense fallback="loading...">
+                <Component />
+              </Suspense>
+            }
+          />
+        );
+      })}
+      <Route path="/*" element={<Error_404></Error_404>}></Route>
     </Routes>
   );
 };
 
 export default DynamicRouter;
-
-const Renderer = ({ pagesPath }: Props) => {
-  const location = useLocation();
-
-  const Page = lazy(() =>
-    import(pagesPath + location.pathname).catch((err) => {
-      console.log(pagesPath);
-      return import(pagesPath + "/error/404");
-    })
-  );
-
-  return (
-    <Suspense fallback="loading...">
-      <Page></Page>
-    </Suspense>
-  );
-};
